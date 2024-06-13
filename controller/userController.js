@@ -14,8 +14,12 @@ export async function getUserById(req, res) {
   try {
     let user = await User.findById(req?.params?.id).lean();
     console.log(user);
-    res.json(user);
-  } catch (err) {
+    if(user === null){
+      res.status(404).json({message: "user not found"})
+    }else{
+      res.status(200).json(user);
+    }
+    } catch (err) {
     console.log(err);
     res.status(500).json(err.message);
   }
