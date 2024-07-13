@@ -8,7 +8,7 @@ import { welcome } from "../controller/common.js";
 const router = Router();
 router.use("/articles" , articleRouter);
 router.use("/users" , userRouter);
-router.use("/comments" , commentRouter);
+router.use("/" , commentRouter);
 
 
 export default router;

@@ -6,7 +6,7 @@ const articleSchema = new Schema({
   title :{type : String , required : true },
   description : String,
   tags : [ String ],
-   author : {type : Schema.Types.ObjectId, ref : "User" , required :true },
+   author : {type : Schema.Types.ObjectId, ref : "User"},
    comments : {type : Schema.Types.ObjectId, ref : "Comment"}
     } , {timestamps : true});
 

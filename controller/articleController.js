@@ -1,4 +1,5 @@
 import Article from "../models/articlesModel.js";
+import Comment from "../models/commentsModel.js";
 
 export async function getArticles(req, res) {
  try{
@@ -12,7 +13,6 @@ export async function getArticles(req, res) {
 export async function getArticleById(req , res){
   try {
     let article = await Article.findById(req?.params?.id).populate('Comment').exec().lean();
-    console.log(article);
     if(article === null){
       res.status(404).json({message: "article not found"})
     }else{
@@ -57,3 +57,42 @@ export async function deleteArticle(req, res) {
     res.status(500).json(err.message);
   }
 };
+// add comment on article--
+
+export async function addCommentOnArticle(res , articleId , newComment){
+  try{
+
+    const article = await Article.findByIdAndUpdate(articleId , { $push : { comments : newComment?._id},
+    },{new:true});
+
+
+   console.log(article);
+
+
+  if(article === null){
+    res.status(404).json({message : "article not found"});
+  }
+  return true;
+}catch(err){
+  console.log(err);
+  res.status(500).json({message : "internal server error"});
+  return false;
+}
+}
+
+//remove comment from article--
+
+export async function deleteCommentFromArticle(res , articleId , commentId){
+  try{
+    const article  = await Article.findByIdAndDelete(articleId ,{ $pull : {comments : commentId},});
+    if(article === null){
+      res.status(404).json({message : "article not found"});
+    }
+    return true;
+  } catch(err){
+    console.log("Error deleting comment from article:", err);
+    res.status(500).json({message : "internal serve error"});
+    return false;
+  }
+}
+

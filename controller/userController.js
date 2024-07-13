@@ -49,12 +49,12 @@ export async function updateUser(req, res) {
 };
 
 export async function deleteUser(req, res) {
-  console.log(req);
   try {
-    await User.findByIdAndDelete(req?.params?.id);
-    res.status(204).json({ isDeleted: true });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err.message);
+    const user = await User.findByIdAndDelete(req.params.id);
+    res.status(204);
+  } catch (error) {
+    console.log("Error creating user:", error);
+
+    res.status(500).json({ message: "Internal Server Error" });
   }
-};
+}
